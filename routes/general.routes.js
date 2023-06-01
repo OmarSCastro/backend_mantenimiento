@@ -35,16 +35,16 @@ router.post('/new',
         res.status(200).json(newRegistro)
     } catch (error) {
         next(error)
-    }
+    }  
 });
 
-router.post('/update', 
-    // validatorHandler(createFirmaSchema, 'body'),
+router.patch('/update/:id', 
     async(req, res, next) => {
     try {
         const body = req.body;
-        const newRegistro = await service.update(body);
-        res.status(200).json(newRegistro)
+        const {id} = req.params;
+        const updateRegistro = await service.update(body, id);
+        res.status(200).json(updateRegistro)
     } catch (error) {
         next(error)
     }

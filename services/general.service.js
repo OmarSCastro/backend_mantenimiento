@@ -8,27 +8,40 @@ class generalService{
     async create(body) {
         const fecha = new Date();
         const newRegistro = {...body, "create_at":fecha};
-        // const altaRegistro = await models.general.create(body);
         const altaRegistro = await models.general.create(newRegistro);
         return altaRegistro;
     };
 
+    async findOne(id){
+        const registro = await models.general.findByPk(id);
+        if (!registro) {
+            boom.notFound('Registro no encontrado');
+        }
+        return registro
+    };
 
-    async update(body){
+
+    async update(body, id){
         const fecha = new Date();
+        const registro = await this.findOne(id);
+        if (registro) {
+            if (body.status) {
+            const volante = fecha;
+            const differenceInMilliseconds = volante - registro.create_at;
+            const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
+            const differenceInMinutes = Math.floor(differenceInSeconds / 60);
+            const tiempo_taller = Math.floor(differenceInMinutes / 60);
+            const updateRegistro = {...body, ...registro, "volante": volante, "update_at": fecha, "tiempo_taller": tiempo_taller}
+          return updateRegistro;  
+        } else {
+            return "soy nulo"
+        }
+        }else {
+            return "No existe registro";
+        }
+     
         
     };  
-
-    objeto_nuevo_registro= {
-        "folio": 155,
-        "economico": 100,
-        "ruta": "11X",
-        "tipo_mantenimiento": "correctivo",
-        "descripcion_falla": "Falla en el clutch",
-        "operador": 100,
-        "personal_taller": 200,
-        // "create_at": colocar fecha del registro
-    }
 
     objeto_actualizacion_registro= {
         "estado": "proceso",
